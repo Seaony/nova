@@ -101,8 +101,13 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
                 return null;
             })->download(function ($request, $model) {
                 $name = $this->originalNameColumn ? $model->{$this->originalNameColumn} : null;
+                $name = $name ?: ($this->value ? basename($this->value) : null);
 
-                return Storage::disk($this->getStorageDisk())->download($this->value, $name);
+                return !$this->value || Str::startsWith($this->value, 'http')
+                    ? response()->streamDownload(function () {
+                        echo file_get_contents($this->value);
+                    }, $name)
+                    : Storage::disk($this->getStorageDisk())->download($this->value, $name);
             })->delete(function () {
                 if ($this->value) {
                     Storage::disk($this->getStorageDisk())->delete($this->value);

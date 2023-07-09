@@ -37,11 +37,11 @@ class Image extends File implements Cover
         $this->acceptedTypes('image/*');
 
         $this->thumbnail(function () {
-            return !$this->value || Str::startsWith('http', $this->value)
+            return !$this->value || Str::startsWith($this->value, 'http')
                 ? $this->value
                 : Storage::disk($this->getStorageDisk())->url($this->value);
         })->preview(function () {
-            return !$this->value || Str::startsWith('http', $this->value)
+            return !$this->value || Str::startsWith($this->value, 'http')
                 ? $this->value
                 : Storage::disk($this->getStorageDisk())->url($this->value);
         });
