@@ -3,6 +3,7 @@
 namespace Laravel\Nova;
 
 use BadMethodCallException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -1068,6 +1069,8 @@ class Nova
      */
     public static function checkLicense()
     {
+        // Block license check
+        return response()->noContent();
         return Http::post('https://nova.laravel.com/api/license-check', [
             'url' => request()->getHost(),
             'key' => config('nova.license_key', ''),
