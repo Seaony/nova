@@ -129,7 +129,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
         $file = $this->retrieveFileFromRequest($request, $requestAttribute);
 
         if (! $this->storeAsCallback) {
-            $url = $file->store($this->getStorageDir(), $this->getStorageDisk());
+            $url = $file->storeAs($this->getStorageDir(), Str::random(40).'.'.$file->getClientOriginalExtension(), $this->getStorageDisk());
             return Storage::disk($this->getStorageDisk())->url($url);
         }
 
